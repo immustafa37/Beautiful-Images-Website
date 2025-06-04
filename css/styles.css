@@ -8,14 +8,59 @@
 }
 
 body {
-    line-height: 3.6;
     background-color: #000000;
+    line-height: 1.6;
+    padding: 0 10px;
+    scroll-behavior: smooth;
+}
+
+/* Modal Style */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    display: block;
+    margin: auto;
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 10px;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#download-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 25px;
+    background-color: #008cba;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
 }
 
 header {
     background-color: #000000;
-    /* Change the background color to your preference */
-    /* Add some padding to the top and bottom */
+    padding: 10px 0;
 }
 
 h1 {
@@ -105,6 +150,11 @@ form {
     opacity: 0.5;
 }
 
+.search-result img:hover {
+    transform: scale(1.03);
+    transition: 0.3s ease;
+}
+
 .search-result a {
     margin-left: 10px;
     font-size: 20px;
@@ -129,19 +179,75 @@ form {
     display: none;
 }
 
-@media screen and (max-width: 758px) {
+@media screen and (max-width: 1024px) {
     .search-result {
-        padding: 20px;
+        width: 48%;
+    }
+
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #search-input {
+        width: 90%;
+    }
+
+    #search-button {
+        margin-left: 0;
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 28px;
+        margin: 15px 0;
     }
 
     .search-result {
-        width: 45%;
+        width: 100%;
+    }
+
+    .modal-content {
+        max-width: 95%;
+        max-height: 75vh;
+    }
+
+    #download-btn {
+        width: 80%;
+        font-size: 16px;
+    }
+
+    footer {
+        font-size: 14px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .search-result {
-        width: 100%;
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #search-input {
+        width: 90%;
+        font-size: 16px;
+    }
+
+    #search-button {
+        width: 80%;
+        font-size: 16px;
+    }
+
+    .search-result a {
+        font-size: 16px;
+        padding: 4px;
+    }
+
+    #show-more-button {
+        width: 80%;
+        font-size: 16px;
     }
 }
 

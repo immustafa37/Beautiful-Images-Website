@@ -20,22 +20,26 @@ async function searchImages() {
     if (page === 1) {
         searchResults.innerHTML = "";
     }
-    
+
     results.forEach(result => {
         const imageWrapper = document.createElement('div');
         imageWrapper.classList.add("search-result");
+
         const image = document.createElement('img');
-        image.src = result.urls.small; // Corrected property name
-        image.alt = result.alt_description;
+        image.src = result.urls.small;
+        image.alt = result.alt_description || "Unsplash Image";
+        image.setAttribute("data-full", result.urls.full); // ⭐️ Store full res image
+
         const imageLink = document.createElement('a');
         imageLink.href = result.links.html;
         imageLink.target = "_blank";
-        imageLink.textContent = result.alt_description;
+        imageLink.textContent = result.alt_description || "View on Unsplash";
 
         imageWrapper.appendChild(image);
         imageWrapper.appendChild(imageLink);
         searchResults.appendChild(imageWrapper);
     });
+
     page++;
     if (page > 1) {
         showMore.style.display = "block";
@@ -50,4 +54,44 @@ formEl.addEventListener("submit", (event) => {
 
 showMore.addEventListener("click", () => {
     searchImages();
+});
+
+const modal = document.getElementById("image-modal");
+const modalImg = document.getElementById("modal-img");
+const downloadBtn = document.getElementById("download-btn");
+const closeModal = document.querySelector(".close");
+
+searchResults.addEventListener("click", (event) => {
+    if (event.target.tagName === "IMG") {
+        const img = event.target;
+        const fullImageURL = img.dataset.full; // ✅ Use full URL
+
+        modal.style.display = "block";
+        modalImg.src = fullImageURL;
+        modalImg.alt = img.alt;
+
+        // ✅ Use fullImageURL for download
+        downloadBtn.onclick = async function () {
+            try {
+                const response = await fetch(fullImageURL);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = img.alt || "downloaded-image";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                alert("Image download failed.");
+                console.error(err);
+            }
+        };
+    }
+});
+
+closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
 });
